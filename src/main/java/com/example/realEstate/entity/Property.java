@@ -20,7 +20,7 @@ public class Property {
 
     private String address;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Owner owner;
 
     @Column(name = "market_value")

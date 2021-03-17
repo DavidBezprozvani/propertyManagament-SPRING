@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,4 +27,7 @@ public class Owner {
 
     @Column(name = "social_number")
     private String socialNumber;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    private Set<Property> properties;
 }

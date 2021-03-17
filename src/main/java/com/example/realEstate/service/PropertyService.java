@@ -43,20 +43,26 @@ public class PropertyService {
         return entityMapper.convertPropertyEntityToDTO(propertyRepository.getOne(propertyId));
     }
 
-    public PropertyDTO saveProperty(PropertyDTO propertyDTO) {
-        Long id = propertyDTO.getId();
+    public PropertyDTO createProperty(PropertyDTO propertyDTO) {
         Property property = dtoMapper.convertPropertyDtoToEntity(propertyDTO);
+        Property savedProperty = propertyRepository.save(property);
+        return entityMapper.convertPropertyEntityToDTO(savedProperty);
+
+    }
+
+    public PropertyDTO updateProperty(PropertyDTO propertyDTO) {
+        Long id = propertyDTO.getId();
         if (id == null) {
-            Owner owner = ownerRepository.getOne(propertyDTO.getOwnerId());
-            property.setOwner(owner);
-            Property savedProperty = propertyRepository.save(property);
-            propertyDTO =  entityMapper.convertPropertyEntityToDTO(savedProperty);
-        } else if (id.equals(property.getId())) {
-            property = dtoMapper.convertPropertyDtoToEntity(propertyDTO);
-            Property updatedProperty =  propertyRepository.save(property);
-            propertyDTO = entityMapper.convertPropertyEntityToDTO(updatedProperty);
+            throw new EntityNotFoundException(id);
         }
-        return propertyDTO;
+        Property property = propertyRepository.getOne(id);
+        property.setMarketValue(propertyDTO.getMarketValue());
+        property.setSize(propertyDTO.getSize());
+        property = dtoMapper.convertPropertyDtoToEntity(propertyDTO);
+        Property updatedProperty = propertyRepository.save(property);
+        return entityMapper.convertPropertyEntityToDTO(updatedProperty);
+
+
     }
 
     public void deleteProperty(Long id) {
