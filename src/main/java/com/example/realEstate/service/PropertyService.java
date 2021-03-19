@@ -43,6 +43,16 @@ public class PropertyService {
         return entityMapper.convertPropertyEntityToDTO(propertyRepository.getOne(propertyId));
     }
 
+    public List<PropertyDTO> getAllPropertiesByOwner(Long ownerId) {
+        if (ownerId == null) {
+            throw new EntityNotFoundException(ownerId);
+        }
+        return propertyRepository.findByOwner(ownerId)
+                .stream()
+                .map(property -> entityMapper.convertPropertyEntityToDTO(property))
+                .collect(Collectors.toList());
+    }
+
     public PropertyDTO createProperty(PropertyDTO propertyDTO) {
         Property property = dtoMapper.convertPropertyDtoToEntity(propertyDTO);
         Property savedProperty = propertyRepository.save(property);

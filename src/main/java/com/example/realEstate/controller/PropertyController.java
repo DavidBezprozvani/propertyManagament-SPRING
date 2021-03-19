@@ -29,6 +29,11 @@ public class PropertyController {
         return propertyService.getSinglePropertyById(id);
     }
 
+    @GetMapping("/owner/{id}")
+    public List<PropertyDTO> getAllPropertiesByOwner(@PathVariable Long id) {
+        return propertyService.getAllPropertiesByOwner(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PropertyDTO saveProperty(@RequestBody @Valid PropertyDTO propertyDTO) {
