@@ -22,4 +22,9 @@ public class TaxController {
     public BigDecimal getYearlyTaxByPropertyId(@PathVariable Long id) {
         return taxService.calculateYearlyTaxByPropertyId(id);
     }
+
+    @GetMapping("/owner/{id}")
+    public BigDecimal getTotalYearlyTaxByOwnerId(@PathVariable Long id) {
+        return taxService.calculateYearlyTaxByPropertyOwner(id);
+    }
 }

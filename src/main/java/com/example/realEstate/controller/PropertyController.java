@@ -40,7 +40,7 @@ public class PropertyController {
         return propertyService.createProperty(propertyDTO);
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("edit/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public PropertyDTO updatePost(@RequestBody @Valid PropertyDTO propertyDTO) {
         return propertyService.updateProperty(propertyDTO);
