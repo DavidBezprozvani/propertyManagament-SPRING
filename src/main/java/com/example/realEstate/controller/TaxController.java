@@ -27,4 +27,9 @@ public class TaxController {
     public BigDecimal getTotalYearlyTaxByOwnerId(@PathVariable Long id) {
         return taxService.calculateYearlyTaxByPropertyOwner(id);
     }
+
+    @GetMapping("/properties/owner/{id}")
+    public BigDecimal getMarketValueSumOfAllPropertiesByOwner(@PathVariable Long id) {
+        return taxService.getMarketValueSumOfAllPropertiesByOwner(id);
+    }
 }

@@ -36,7 +36,7 @@ public class TaxService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal calculateMarketValueSumOfAllPropertiesByOwner(Long ownerId) {
+    public BigDecimal getMarketValueSumOfAllPropertiesByOwner(Long ownerId) {
         List<PropertyDTO> properties = propertyService.getAllPropertiesByOwner(ownerId);
                 return properties
                 .stream()
@@ -49,15 +49,12 @@ public class TaxService {
         BigDecimal yearlyTax = null;
 
         if (propertyDTO.getType().equals(Type.HOUSE.name())) {
-//            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.01);
             yearlyTax = propertyDTO.getMarketValue().multiply(new BigDecimal("0.01"));
         } else if (propertyDTO.getType().equals(Type.APARTMENT.name())) {
-//            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.05);
             yearlyTax = propertyDTO.getMarketValue().multiply(new BigDecimal("0.05"));
         } else if (propertyDTO.getType().equals(Type.COMMERCIAL.name())) {
             yearlyTax = propertyDTO.getMarketValue().multiply(new BigDecimal("0.10"));
         } else if (propertyDTO.getType().equals(Type.INDUSTRIAL.name())) {
-//            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.20);
             yearlyTax = propertyDTO.getMarketValue().multiply(new BigDecimal("0.20"));
         }
         return BigDecimal.valueOf(Double.parseDouble(new DecimalFormat("##.##").format(yearlyTax)));

@@ -34,6 +34,7 @@ public class PropertyController {
         return propertyService.getAllPropertiesByOwner(id);
     }
 
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PropertyDTO saveProperty(@RequestBody @Valid PropertyDTO propertyDTO) {
