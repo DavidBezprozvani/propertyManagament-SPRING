@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -24,9 +25,9 @@ public class Property {
     private Owner owner;
 
     @Column(name = "market_value")
-    private Double marketValue;
+    private BigDecimal marketValue;
 
-    private Double size;
+    private BigDecimal size;
 
     @Enumerated(EnumType.STRING)
     private Type type;

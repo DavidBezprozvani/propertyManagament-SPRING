@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -15,9 +17,9 @@ public class PropertyDTO {
 
     private String address;
 
-    private Double marketValue;
+    private BigDecimal marketValue;
 
-    private Double size;
+    private BigDecimal size;
 
     private String type;
 

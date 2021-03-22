@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 public class TaxService {
 
     private PropertyService propertyService;
-    private OwnerRepository ownerRepository;
+
 
     public TaxService(PropertyService propertyService) {
         this.propertyService = propertyService;
@@ -29,26 +30,35 @@ public class TaxService {
 
     public BigDecimal calculateYearlyTaxByPropertyOwner(Long ownerId) {
         List<PropertyDTO> properties = propertyService.getAllPropertiesByOwner(ownerId);
-
-
-        return BigDecimal.valueOf(properties
+        return properties
                 .stream()
-                .mapToDouble(PropertyDTO::getMarketValue)
-                .sum());
-
+                .map(this::calculateYearlyTaxByType)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public BigDecimal calculateMarketValueSumOfAllPropertiesByOwner(Long ownerId) {
+        List<PropertyDTO> properties = propertyService.getAllPropertiesByOwner(ownerId);
+                return properties
+                .stream()
+                .map(PropertyDTO::getMarketValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
 
     public BigDecimal calculateYearlyTaxByType(PropertyDTO propertyDTO) {
         BigDecimal yearlyTax = null;
 
         if (propertyDTO.getType().equals(Type.HOUSE.name())) {
-            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.01);
+//            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.01);
+            yearlyTax = propertyDTO.getMarketValue().multiply(new BigDecimal("0.01"));
         } else if (propertyDTO.getType().equals(Type.APARTMENT.name())) {
-            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.05);
+//            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.05);
+            yearlyTax = propertyDTO.getMarketValue().multiply(new BigDecimal("0.05"));
         } else if (propertyDTO.getType().equals(Type.COMMERCIAL.name())) {
-            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.10);
+            yearlyTax = propertyDTO.getMarketValue().multiply(new BigDecimal("0.10"));
         } else if (propertyDTO.getType().equals(Type.INDUSTRIAL.name())) {
-            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.20);
+//            yearlyTax = BigDecimal.valueOf(propertyDTO.getMarketValue() * 0.20);
+            yearlyTax = propertyDTO.getMarketValue().multiply(new BigDecimal("0.20"));
         }
         return BigDecimal.valueOf(Double.parseDouble(new DecimalFormat("##.##").format(yearlyTax)));
 
