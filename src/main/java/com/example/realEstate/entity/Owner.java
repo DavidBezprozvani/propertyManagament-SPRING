@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,4 +28,11 @@ public class Owner {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private Set<Property> properties;
+
+    public Owner(Long id, String name, String surname, String socialNumber) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.socialNumber = socialNumber;
+    }
 }

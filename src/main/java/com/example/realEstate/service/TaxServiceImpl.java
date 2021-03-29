@@ -1,43 +1,43 @@
 package com.example.realEstate.service;
 
-import com.example.realEstate.entity.Owner;
-import com.example.realEstate.entity.Property;
 import com.example.realEstate.entity.Type;
 import com.example.realEstate.entity.dto.PropertyDTO;
-import com.example.realEstate.repository.OwnerRepository;
+import com.example.realEstate.service.dao.TaxService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
-public class TaxService {
+public class TaxServiceImpl implements TaxService {
 
-    private PropertyService propertyService;
+    private PropertyServiceImpl propertyServiceImpl;
 
 
-    public TaxService(PropertyService propertyService) {
-        this.propertyService = propertyService;
+    public TaxServiceImpl(PropertyServiceImpl propertyServiceImpl) {
+        this.propertyServiceImpl = propertyServiceImpl;
     }
 
 
+    @Override
     public BigDecimal calculateYearlyTaxByPropertyId(Long id) {
-        return calculateYearlyTaxByType(propertyService.getSinglePropertyById(id));
+        return calculateYearlyTaxByType(propertyServiceImpl.getSinglePropertyById(id));
     }
 
+    @Override
     public BigDecimal calculateYearlyTaxByPropertyOwner(Long ownerId) {
-        List<PropertyDTO> properties = propertyService.getAllPropertiesByOwner(ownerId);
+        List<PropertyDTO> properties = propertyServiceImpl.getAllPropertiesByOwner(ownerId);
         return properties
                 .stream()
                 .map(this::calculateYearlyTaxByType)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    @Override
     public BigDecimal getMarketValueSumOfAllPropertiesByOwner(Long ownerId) {
-        List<PropertyDTO> properties = propertyService.getAllPropertiesByOwner(ownerId);
+        List<PropertyDTO> properties = propertyServiceImpl.getAllPropertiesByOwner(ownerId);
                 return properties
                 .stream()
                 .map(PropertyDTO::getMarketValue)
